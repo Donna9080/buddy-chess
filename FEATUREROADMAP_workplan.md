@@ -36,7 +36,9 @@ purpose.
 
 - [x] **T0.2 — Write `rules.js`** ([PR #3](https://github.com/Donna9080/buddy-chess/pull/3))
   - Depends on: T0.1
-  - Files: `src/rules.js`
+  - Files: `public/js/rules.js` *(moved here from `src/rules.js` just before T2.1 —
+    the browser can only load files under `public/`, so this is the one physical
+    location the browser, and later the server, both import from.)*
   - DoD: one dependency-free JavaScript module that can (a) list every legal
     move for whoever's turn it is in a given position, (b) apply a move to a
     position, (c) detect check, checkmate, and stalemate, (d) handle both
@@ -45,7 +47,7 @@ purpose.
 
 - [x] **T0.3 — Perft correctness test** ([PR #4](https://github.com/Donna9080/buddy-chess/pull/4))
   - Depends on: T0.2
-  - Files: `src/rules.test.js`, `package.json` (test script)
+  - Files: `public/js/rules.test.js`, `package.json` (test script)
   - DoD: `npm test` runs and confirms move counts from the starting position
     of **20** (depth 1), **400** (depth 2), and **8,902** (depth 3), exactly.
     This must be green before Phase 2 starts.
