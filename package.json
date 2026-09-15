@@ -1,0 +1,32 @@
+{
+  "name": "buddy-chess",
+  "version": "1.0.0",
+  "description": "Buddy — a browser chess game on Cloudflare Workers with hot-seat, vs-computer, online, and tutor modes.",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Donna9080/buddy-chess.git"
+  },
+  "keywords": [
+    "chess",
+    "cloudflare-workers"
+  ],
+  "author": "Dolgorsuren Gunreg",
+  "license": "UNLICENSED",
+  "bugs": {
+    "url": "https://github.com/Donna9080/buddy-chess/issues"
+  },
+  "homepage": "https://github.com/Donna9080/buddy-chess#readme",
+  "devDependencies": {
+    "wrangler": "^4.132.0"
+  },
+  "allowScripts": {
+    "esbuild@0.28.1": true,
+    "workerd@1.20260915.1": true
+  }
+}
