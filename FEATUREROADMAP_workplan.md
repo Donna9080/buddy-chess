@@ -34,7 +34,7 @@ purpose.
     `not_found_handling: "single-page-application"`. No Durable Object
     binding yet — that's added in Phase 4 once the Room class exists.
 
-- [ ] **T0.2 — Write `rules.js`**
+- [x] **T0.2 — Write `rules.js`** ([PR #3](https://github.com/Donna9080/buddy-chess/pull/3))
   - Depends on: T0.1
   - Files: `src/rules.js`
   - DoD: one dependency-free JavaScript module that can (a) list every legal
@@ -43,7 +43,7 @@ purpose.
     sides of castling, en passant, and pawn promotion to any of the four
     pieces. No chess library used anywhere.
 
-- [ ] **T0.3 — Perft correctness test**
+- [x] **T0.3 — Perft correctness test** ([PR #4](https://github.com/Donna9080/buddy-chess/pull/4))
   - Depends on: T0.2
   - Files: `src/rules.test.js`, `package.json` (test script)
   - DoD: `npm test` runs and confirms move counts from the starting position
