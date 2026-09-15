@@ -228,3 +228,181 @@ when we reach this phase** — no need to decide now:
 Full detail in [ProductSpec.md §10](ProductSpec.md#10-decisions-i-made-that-need-your-ok).
 Quick list: 5 themes vs. 4, Tutor mode scope (single-player vs. two-player +
 tutor), difficulty→depth mapping, and the Phase 6 extra choice.
+
+---
+
+## Proposed — round 1, 2026-09-15
+
+*A read-only audit-and-gap-analysis pass, requested separately from normal
+task work. Nothing below was built in this pass — see "Audit findings" for
+what the current, committed code actually does, and "Proposed features" for
+new work to consider adding to the phases above. A note on scope: the read
+instruction for this pass named `src/` and `test/` as folders to check —
+neither exists in this repo. Everything (the rules engine, its test file,
+and the future server code) lives under `public/js/` and, from Phase 4
+onward, `src/` will hold only the server-side Durable Object files
+(`worker.js`, `room.js`) — there is no separate `test/` folder; the one test
+file today sits next to the module it tests, at `public/js/rules.test.js`.*
+
+### Audit findings
+
+Checked off: T0.1, T0.2, T0.3, T1.1. Going through each against what the
+code actually does:
+
+- **T0.1, T0.2, T0.3 — genuinely done, no issues found.** `wrangler.jsonc`
+  matches its DoD exactly (static assets, SPA fallback, observability,
+  today's compatibility date, no Durable Object binding yet).
+  [rules.js](public/js/rules.js) implements everything T0.2 promises, and
+  `npm test` passes all three committed tests right now (re-verified during
+  this pass, not just trusted from memory).
+
+- **T1.1 is functionally done, but its own placeholder text is now stale.**
+  [public/index.html:9](public/index.html) reads "Scaffold placeholder — the
+  real landing page arrives in Phase 1" — but Phase 1 *is* T1.1, and it's
+  already checked off and deployed. The page still works (HTTP 200, correct
+  content) so the box is fairly checked, but the copy on the live site is
+  now describing a future that already happened. Small copy fix, not a
+  functional bug — folded into the proposals below rather than left as a
+  loose end.
+
+- **No isolated test proves castling, en passant, or promotion individually
+  work correctly.** ProductSpec §4 names these three as required rules-engine
+  behaviors, and T0.2/T0.3 are checked off partly on their strength. They
+  *are* exercised — perft(3) and perft(4) (8,902 and 197,281, both verified)
+  would almost certainly change if any of the three were subtly broken,
+  because perft counts every legal move sequence and these rules add or
+  remove specific sequences. But "the aggregate number is still right" is
+  not the same as "here is a test that fails with a clear, specific message
+  if castling breaks." If someone changes `rules.js` later and only checks
+  castling breaks in a way that perft's count doesn't happen to catch, there
+  is currently no test that would say so directly. Proposed as P1.2 below.
+
+- **Hot-Seat itself (Phase 2) has no committed code yet — this is expected,
+  not a bug.** T2.1–T2.4 are correctly left unchecked. For what it's worth,
+  since this audit pass interrupted that work mid-session: the board
+  rendering and full gameplay loop are already written and were passing
+  manual testing, just not yet committed — they're sitting safely stashed
+  on the `phase2/t2.1-board-rendering` branch, untouched by this pass, ready
+  to resume once you've looked at what's below.
+
+- **Nothing in Phase 3–6 exists yet either** (no `ai.js`, no `worker.js`,
+  no `room.js`) — also expected, also correctly unchecked. This means the
+  "things that break on refresh / two tabs" question this pass was asked to
+  look for has no existing Online code to find bugs *in* yet — instead,
+  P1.7 below proposes hardening the *plan* for Phase 4 before it's built,
+  since that's cheaper than fixing it after.
+
+- **A real, currently-missing rule: some legal endgames never end.**
+  `getStatus` in [rules.js](public/js/rules.js:334) only returns
+  `checkmate`, `stalemate`, `check`, or `normal` — there's no check for
+  **insufficient material** (e.g., king vs. king, or king+bishop vs. king —
+  positions where neither side can possibly deliver checkmate with the
+  pieces left on the board). Play that down to a bare king vs. king and the
+  status stays `normal` forever; the game never declares it over. To be
+  clear, this is *different* from the two draw rules the brief explicitly
+  put out of scope (repetition and the fifty-move rule) — insufficient
+  material isn't mentioned as a non-goal anywhere, it was just never built.
+  Proposed as P1.1 below — it's the highest-value, lowest-effort item on
+  the list.
+
+### Proposed features (ranked by value ÷ effort, highest first)
+
+- [ ] **P1.1 Detect insufficient-material draws** — `public/js/rules.js`.
+  Depends on: T0.2. Size: S
+  *Why:* right now, a game can reach a position where it's physically
+  impossible for either player to ever win (like just two lone kings left on
+  the board) and Buddy will never say the game is over.
+  *Done:* on the live site, play (or fast-forward via the browser console)
+  down to just the two kings — the status message changes to something like
+  "Draw — insufficient material" instead of continuing to say "White to
+  move" / "Black to move" forever.
+  *Spec:* within scope — distinct from the repetition/fifty-move rules
+  ProductSpec §9 excludes.
+
+- [ ] **P1.2 Direct tests for castling, en passant, and promotion**
+  — `public/js/rules.test.js`. Depends on: T0.2, T0.3. Size: S
+  *Why:* these are the three trickiest rules in chess, they're each
+  individually promised in ProductSpec §4, and today they're only checked
+  indirectly (in a large aggregate move-count) instead of by a test that
+  points straight at the bug if one of them breaks later.
+  *Done:* run `npm test` in a terminal — the output lists new, individually
+  named passing tests such as "castling moves the rook" and "en passant
+  removes the right pawn," not just the existing perft test.
+  *Spec:* within scope.
+
+- [ ] **P1.3 Make `npm test` discover every test file, not just one hardcoded
+  name** — `package.json`, a small new `scripts/run-tests.js`. Depends on:
+  T0.3. Size: S
+  *Why:* the test command currently only runs `rules.test.js` by name
+  because this environment's Node can't scan a folder for test files on its
+  own; if a second test file gets added later (for the computer opponent, or
+  the online server) and nobody remembers to add it to the command by hand,
+  it will silently never run.
+  *Done:* add a second, throwaway test file under `public/js/`, run
+  `npm test`, and see both files' results in the output without editing
+  `package.json` again.
+  *Spec:* within scope.
+
+- [ ] **P1.4 Add a GitHub Actions check that runs the tests on every pull
+  request** — new `.github/workflows/test.yml`. Depends on: T0.3 (and P1.3
+  ideally landing first). Size: S
+  *Why:* right now, nothing stops a future change from breaking the chess
+  rules unless someone remembers to run `npm test` by hand before merging.
+  *Done:* open any pull request on GitHub — a green check (or red X if
+  something's broken) appears at the bottom of the PR page automatically,
+  without anyone running a command themselves.
+  *Spec:* within scope.
+
+- [ ] **P1.5 Highlight the most recent move on the board** — `public/js/board.js`,
+  `public/css/base.css`. Depends on: T2.1. Size: S
+  *Why:* beginners (the audience ProductSpec §1 calls out specifically) lose
+  track of what just happened, especially right after the other player
+  moves in Hot-Seat; a soft highlight on the from/to squares of the last
+  move fixes that with almost no added complexity.
+  *Done:* make any move — the square the piece left and the square it
+  landed on both stay visibly marked until the next move.
+  *Spec:* within scope.
+
+- [ ] **P1.6 Fix the stale placeholder copy** — `public/index.html`. Depends
+  on: T1.1. Size: S
+  *Why:* the live site's placeholder text describes Phase 1 as something
+  that "arrives" later, but Phase 1 already shipped — small, but it's live
+  and visible to anyone who visits the URL right now.
+  *Done:* visit the live URL — the text no longer refers to a future phase
+  that already happened.
+  *Spec:* within scope.
+
+- [ ] **P1.7 Define and test the "same player, two tabs" case for Online
+  mode** — `ProductSpec.md §6.5`, `src/room.js` (once it exists). Depends
+  on: T4.4. Size: M
+  *Why:* ProductSpec §6.5 says a refresh reconnects you to your seat using a
+  saved token, but never says what happens if that same token connects a
+  *second* time while the first connection is still open (a duplicate tab,
+  or a slow refresh that didn't fully close the old connection first) —
+  without a rule, this is exactly the kind of thing that would misbehave the
+  first time two real people demo it.
+  *Done (once T4.4 is built):* open an online room, then open the same
+  room's URL again in a second browser tab on the same device — the game
+  should stay playable and show the same live position in both tabs, rather
+  than one tab silently going stale or the two tabs fighting over the seat.
+  *Spec:* within scope — this refines T4.4's existing definition of done
+  rather than adding a new non-goal.
+
+- [ ] **P1.8 Basic screen-reader labels on board squares** —
+  `public/js/board.js`. Depends on: T2.1. Size: S
+  *Why:* ProductSpec §1 says Buddy should welcome "any age" and any first-time
+  player; right now every square is an unlabeled button, so a screen reader
+  announces nothing useful about what's on the board.
+  *Done:* turn on a screen reader (e.g. built-in VoiceOver/Narrator), tab to
+  a board square — it announces something like "e4, white pawn" instead of
+  just "button."
+  *Spec:* within scope.
+
+- [ ] **P1.9 Confirm before New Game / Resign end an in-progress game** —
+  `public/js/online.js` (T4.5), `public/js/vscomputer.js` or wherever the
+  Phase 6 extra lands (T6.1). Depends on: T4.5, T6.1. Size: S
+  *Why:* both actions immediately end a game with no way to undo an
+  accidental click, which is an easy way to ruin a friend's in-progress win.
+  *Done:* click New Game or Resign mid-game — a short "are you sure?" step
+  appears before anything actually resets or ends.
+  *Spec:* within scope.
