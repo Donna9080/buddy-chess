@@ -8,7 +8,7 @@ their shoulder.
 
 By **Dolgorsuren Gunreg** *(if that's not quite right, tell me and I'll fix it)*
 
-**Live demo:** _coming soon — link goes here once Phase 1 of the roadmap is deployed_
+**Live demo:** [buddy-chess.dolgorsureng.workers.dev](https://buddy-chess.dolgorsureng.workers.dev)
 
 ## The four ways to play
 
@@ -52,8 +52,8 @@ Full explanations of every term above, and many more, are in
 
 ## Status
 
-📋 Planning stage. Rules engine and Cloudflare scaffold not started yet — see
-the roadmap for the first task.
+🚧 Phase 0 (rules engine) and Phase 1 (deploy skeleton) are done. The live
+site currently shows a placeholder — Hot-Seat mode is next.
 
 ## Running it locally (once Phase 1 is built)
 
