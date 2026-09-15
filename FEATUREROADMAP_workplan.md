@@ -34,7 +34,7 @@ purpose.
     `not_found_handling: "single-page-application"`. No Durable Object
     binding yet — that's added in Phase 4 once the Room class exists.
 
-- [ ] **T0.2 — Write `rules.js`**
+- [x] **T0.2 — Write `rules.js`** ([PR #3](https://github.com/Donna9080/buddy-chess/pull/3))
   - Depends on: T0.1
   - Files: `src/rules.js`
   - DoD: one dependency-free JavaScript module that can (a) list every legal
