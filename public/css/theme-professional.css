@@ -1,0 +1,23 @@
+body.theme-professional {
+  --square-size: 56px;
+  --square-light: #f2f2f2;
+  --square-dark: #cfcfcf;
+  --board-border: #333333;
+  --piece-white: #ffffff;
+  --piece-white-outline: #555555;
+  --piece-black: #111111;
+  --highlight-selected: #555555;
+  --highlight-move: rgba(0, 0, 0, 0.3);
+  --highlight-capture: rgba(0, 0, 0, 0.55);
+  --app-bg: #ffffff;
+  --app-fg: #1a1a1a;
+  --app-font: "Helvetica Neue", Arial, sans-serif;
+}
+
+body.theme-professional .board {
+  border-width: 1px;
+}
+
+body.theme-professional .theme-choice {
+  border-radius: 2px;
+}
