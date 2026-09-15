@@ -92,7 +92,7 @@ building anything players will actually see.
 This is the first fully playable milestone, and the priority the brief calls
 out explicitly: **hot-seat live on the internet, first.**
 
-- [ ] **T2.1 — Board rendering + one theme**
+- [x] **T2.1 — Board rendering + one theme** ([PR #8](https://github.com/Donna9080/buddy-chess/pull/8))
   - Depends on: T0.2, T0.3, T1.1
   - Files: `public/hotseat.html`, `public/js/board.js`, `public/css/base.css`,
     `public/css/theme-adult.css`
@@ -101,7 +101,7 @@ out explicitly: **hot-seat live on the internet, first.**
     legal targets simply don't respond to clicks. One theme (Adult/Classic)
     is fully styled.
 
-- [ ] **T2.2 — Full hot-seat gameplay loop**
+- [x] **T2.2 — Full hot-seat gameplay loop** ([PR #8](https://github.com/Donna9080/buddy-chess/pull/8))
   - Depends on: T2.1
   - Files: `public/js/hotseat.js`
   - DoD: two people can play a complete, legal game start to finish on one
