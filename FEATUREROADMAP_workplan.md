@@ -57,7 +57,7 @@ purpose.
 Goal: prove the whole pipeline (code → Cloudflare → public URL) works before
 building anything players will actually see.
 
-- [ ] **T1.1 — Static placeholder page, deployed**
+- [x] **T1.1 — Static placeholder page, deployed** ([live](https://buddy-chess.dolgorsureng.workers.dev))
   - Depends on: T0.1
   - Files: `public/index.html`, `wrangler.jsonc`
   - DoD: `npx wrangler deploy` publishes a live `*.workers.dev` URL showing a
