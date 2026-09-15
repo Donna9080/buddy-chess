@@ -25,7 +25,7 @@ architecture choice referenced here.
 Nothing else can be trusted until this phase passes. No UI is built here on
 purpose.
 
-- [ ] **T0.1 — Project scaffold**
+- [x] **T0.1 — Project scaffold** ([PR #2](https://github.com/Donna9080/buddy-chess/pull/2))
   - Depends on: nothing
   - Files: `package.json`, `wrangler.jsonc`
   - DoD: `npx wrangler dev` starts a local Worker serving an empty page with
