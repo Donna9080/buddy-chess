@@ -52,6 +52,26 @@ purpose.
     of **20** (depth 1), **400** (depth 2), and **8,902** (depth 3), exactly.
     This must be green before Phase 2 starts.
 
+- [ ] **T0.4 — Detect insufficient-material draws** *(promoted from P1.1, round 1)*
+  - Depends on: T0.2
+  - Files: `public/js/rules.js`
+  - DoD: `getStatus` returns a draw (e.g. `'draw-insufficient-material'`) for
+    positions where neither side can possibly deliver checkmate with the
+    pieces left on the board (king vs. king; king+bishop vs. king;
+    king+knight vs. king). Distinct from the repetition/fifty-move rules
+    ProductSpec §9 excludes — this rule is not excluded, it just hadn't been
+    built yet. Add a covering test alongside T0.5.
+
+- [ ] **T0.5 — Direct tests for castling, en passant, and promotion**
+  *(promoted from P1.2, round 1)*
+  - Depends on: T0.2, T0.3
+  - Files: `public/js/rules.test.js`
+  - DoD: `npm test` lists individually named, passing tests that isolate
+    each of the three (e.g. "castling moves the rook," "en passant removes
+    the right pawn," "a pawn reaching the last rank can promote to each of
+    the four pieces") — not just the aggregate perft count these were
+    previously only proven through indirectly.
+
 ---
 
 ## Phase 1 — Deploy Skeleton
@@ -103,6 +123,14 @@ out explicitly: **hot-seat live on the internet, first.**
   - Files: `public/index.html` (mode picker linking to Hot-Seat)
   - DoD: Hot-Seat is playable start-to-finish at the public URL. **This is
     the milestone the brief prioritizes above everything else.**
+
+- [ ] **T2.5 — Highlight the most recent move** *(promoted from P1.5, round 1)*
+  - Depends on: T2.1, T2.2 *(needs an actual game loop to have a "last move"
+    to highlight — the round-1 proposal listed T2.1 only, tightened here)*
+  - Files: `public/js/board.js`, `public/css/base.css`
+  - DoD: after any move, the square the piece left and the square it landed
+    on both stay visibly marked until the next move. Ships after T2.4 so it
+    doesn't delay getting Hot-Seat live — it's a polish pass, not a blocker.
 
 ---
 
@@ -307,28 +335,9 @@ code actually does:
 
 ### Proposed features (ranked by value ÷ effort, highest first)
 
-- [ ] **P1.1 Detect insufficient-material draws** — `public/js/rules.js`.
-  Depends on: T0.2. Size: S
-  *Why:* right now, a game can reach a position where it's physically
-  impossible for either player to ever win (like just two lone kings left on
-  the board) and Buddy will never say the game is over.
-  *Done:* on the live site, play (or fast-forward via the browser console)
-  down to just the two kings — the status message changes to something like
-  "Draw — insufficient material" instead of continuing to say "White to
-  move" / "Black to move" forever.
-  *Spec:* within scope — distinct from the repetition/fifty-move rules
-  ProductSpec §9 excludes.
-
-- [ ] **P1.2 Direct tests for castling, en passant, and promotion**
-  — `public/js/rules.test.js`. Depends on: T0.2, T0.3. Size: S
-  *Why:* these are the three trickiest rules in chess, they're each
-  individually promised in ProductSpec §4, and today they're only checked
-  indirectly (in a large aggregate move-count) instead of by a test that
-  points straight at the bug if one of them breaks later.
-  *Done:* run `npm test` in a terminal — the output lists new, individually
-  named passing tests such as "castling moves the rook" and "en passant
-  removes the right pawn," not just the existing perft test.
-  *Spec:* within scope.
+*P1.1, P1.2, and P1.5 were promoted into the phased plan above as T0.4,
+T0.5, and T2.5 — removed from this list to avoid having them tracked in two
+places. The rest are still just proposals, not yet scheduled.*
 
 - [ ] **P1.3 Make `npm test` discover every test file, not just one hardcoded
   name** — `package.json`, a small new `scripts/run-tests.js`. Depends on:
@@ -351,16 +360,6 @@ code actually does:
   *Done:* open any pull request on GitHub — a green check (or red X if
   something's broken) appears at the bottom of the PR page automatically,
   without anyone running a command themselves.
-  *Spec:* within scope.
-
-- [ ] **P1.5 Highlight the most recent move on the board** — `public/js/board.js`,
-  `public/css/base.css`. Depends on: T2.1. Size: S
-  *Why:* beginners (the audience ProductSpec §1 calls out specifically) lose
-  track of what just happened, especially right after the other player
-  moves in Hot-Seat; a soft highlight on the from/to squares of the last
-  move fixes that with almost no added complexity.
-  *Done:* make any move — the square the piece left and the square it
-  landed on both stay visibly marked until the next move.
   *Spec:* within scope.
 
 - [ ] **P1.6 Fix the stale placeholder copy** — `public/index.html`. Depends
