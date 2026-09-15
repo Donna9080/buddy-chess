@@ -6,11 +6,16 @@
   <title>Buddy — Hot-Seat</title>
   <link rel="stylesheet" href="css/base.css">
   <link rel="stylesheet" href="css/theme-adult.css">
+  <link rel="stylesheet" href="css/theme-children.css">
+  <link rel="stylesheet" href="css/theme-cool.css">
+  <link rel="stylesheet" href="css/theme-messy.css">
+  <link rel="stylesheet" href="css/theme-professional.css">
 </head>
 <body class="theme-adult">
   <header class="app-header">
     <a href="index.html">Buddy</a>
     <h1>Hot-Seat</h1>
+    <div id="theme-switcher" class="theme-switcher" aria-label="Choose a theme"></div>
   </header>
 
   <main>
@@ -18,6 +23,7 @@
     <p id="status" class="status" aria-live="polite"></p>
   </main>
 
+  <script type="module" src="js/theme-switcher.js"></script>
   <script type="module" src="js/hotseat.js"></script>
 </body>
 </html>
