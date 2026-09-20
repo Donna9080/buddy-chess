@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Buddy — Tutor</title>
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/theme-adult.css">
+  <link rel="stylesheet" href="css/theme-children.css">
+  <link rel="stylesheet" href="css/theme-cool.css">
+  <link rel="stylesheet" href="css/theme-messy.css">
+  <link rel="stylesheet" href="css/theme-professional.css">
+</head>
+<body class="theme-adult">
+  <header class="app-header">
+    <a href="index.html">Buddy</a>
+    <h1>Tutor</h1>
+    <div id="theme-switcher" class="theme-switcher" aria-label="Choose a theme"></div>
+  </header>
+
+  <main>
+    <section id="setup" class="setup">
+      <fieldset>
+        <legend>Your tutor</legend>
+        <label><input type="radio" name="tutor" value="Coach Rook" checked> Coach Rook</label>
+        <label><input type="radio" name="tutor" value="Coach Knight"> Coach Knight</label>
+        <label><input type="radio" name="tutor" value="Coach Bishop"> Coach Bishop</label>
+        <label><input type="radio" name="tutor" value="Coach Queen"> Coach Queen</label>
+      </fieldset>
+      <fieldset>
+        <legend>Play as</legend>
+        <label><input type="radio" name="color" value="w" checked> White</label>
+        <label><input type="radio" name="color" value="b"> Black</label>
+      </fieldset>
+      <fieldset>
+        <legend>Computer opponent difficulty</legend>
+        <label><input type="radio" name="difficulty" value="1"> Easy</label>
+        <label><input type="radio" name="difficulty" value="2" checked> Medium</label>
+        <label><input type="radio" name="difficulty" value="3"> Hard</label>
+      </fieldset>
+      <button type="button" id="start-button" class="primary-button">Start Game</button>
+    </section>
+
+    <section id="game" hidden>
+      <div id="board" class="board" aria-label="Chess board"></div>
+      <p id="status" class="status" aria-live="polite"></p>
+      <div id="tutor-panel" class="tutor-panel" aria-live="polite"></div>
+    </section>
+  </main>
+
+  <script type="module" src="js/theme-switcher.js"></script>
+  <script type="module" src="js/tutor.js"></script>
+</body>
+</html>

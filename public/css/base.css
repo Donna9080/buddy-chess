@@ -131,6 +131,7 @@ body {
 
 .setup fieldset {
   display: flex;
+  flex-wrap: wrap;
   gap: 1rem;
   border: 1px solid var(--board-border);
   border-radius: 8px;
@@ -172,6 +173,17 @@ body {
   display: flex;
   gap: 0.75rem;
   align-items: baseline;
+}
+
+.tutor-panel {
+  max-width: 480px;
+  min-height: 1.4em;
+  padding: 0.75rem 1rem;
+  border: 2px solid var(--board-border);
+  border-radius: 10px;
+  background: var(--square-light);
+  color: var(--app-fg);
+  font-size: 0.95rem;
 }
 
 main {
