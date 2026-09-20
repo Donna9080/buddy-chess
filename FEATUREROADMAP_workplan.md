@@ -181,7 +181,7 @@ out explicitly: **hot-seat live on the internet, first.**
     immediately after every move — no timers or periodic saves anywhere. The
     object can be forcibly restarted and still remembers the exact position.
 
-- [ ] **T4.3 — Seat assignment + server-side move validation**
+- [x] **T4.3 — Seat assignment + server-side move validation** ([PR #17](https://github.com/Donna9080/buddy-chess/pull/17))
   - Depends on: T4.2, T0.2
   - Files: `src/room.js`
   - DoD: first connection to a room is seated White, second is Black,
