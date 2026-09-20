@@ -40,6 +40,7 @@ function update() {
     onMove: handlePlayerMove,
     lastMove,
     interactive: isPlayerTurn,
+    orientation: playerColor,
   });
 
   const mover = position.turn === 'w' ? 'White' : 'Black';

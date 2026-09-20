@@ -9,7 +9,9 @@ let position = createInitialPosition();
 let lastMove = null;
 
 function update() {
-  renderBoard({ position, container: boardEl, onMove: handleMove, lastMove });
+  // Two people share this screen, so "my side" changes with the turn:
+  // flip the board to face whoever is about to move.
+  renderBoard({ position, container: boardEl, onMove: handleMove, lastMove, orientation: position.turn });
 
   const mover = position.turn === 'w' ? 'White' : 'Black';
   const winner = position.turn === 'w' ? 'Black' : 'White';
