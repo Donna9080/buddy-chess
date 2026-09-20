@@ -1,8 +1,8 @@
 // room.js — one SQLite-backed Durable Object per online game room, reached
 // via env.ROOM.getByName(roomCode). See ProductSpec.md §6 for the full
-// design. Reconnecting to an *existing* seat with a saved token is T4.4 —
-// this file only handles brand-new connections: first in gets White,
-// second gets Black, everyone after that is a spectator.
+// design. The player token is entirely client-owned (a "coat-check
+// ticket") — this file never invents one itself; it only ever labels a
+// seat with whatever token the connecting client sent.
 
 import { DurableObject } from 'cloudflare:workers';
 import { createInitialPosition, applyMove, isMoveLegal } from '../public/js/rules.js';
@@ -31,6 +31,8 @@ export class Room extends DurableObject {
       return new Response('Expected a WebSocket upgrade request', { status: 426 });
     }
 
+    const token = new URL(request.url).searchParams.get('token') ?? crypto.randomUUID();
+
     const { 0: client, 1: server } = new WebSocketPair();
 
     // acceptWebSocket (rather than a plain server.accept() + addEventListener)
@@ -38,19 +40,25 @@ export class Room extends DurableObject {
     // to stay resident in memory for the life of every open connection.
     this.ctx.acceptWebSocket(server);
 
-    const seat = await this.assignSeat();
-    // The seat lives on the connection itself (not just in a JS variable)
-    // because hibernation can drop this object from memory between
-    // messages — serializeAttachment is what survives that.
-    server.serializeAttachment({ seat });
+    const seat = await this.assignSeat(token);
+    // The seat and token live on the connection itself (not just in a JS
+    // variable), because hibernation can drop this object from memory
+    // between messages — serializeAttachment is what survives that.
+    server.serializeAttachment({ seat, token });
 
-    server.send(JSON.stringify({ type: 'seated', payload: { seat } }));
+    server.send(JSON.stringify({ type: 'seated', payload: { seat, token } }));
     server.send(JSON.stringify({ type: 'state', payload: this.state }));
 
     return new Response(null, { status: 101, webSocket: client });
   }
 
-  async assignSeat() {
+  // A token that already matches a seat reconnects to that exact seat; a
+  // new token fills whichever seat is open; once both are full, everyone
+  // else is a spectator — regardless of what token they showed up with.
+  async assignSeat(token) {
+    if (this.state.seats.w === token) return 'w';
+    if (this.state.seats.b === token) return 'b';
+
     let seat;
     if (this.state.seats.w === null) {
       seat = 'w';
@@ -59,7 +67,7 @@ export class Room extends DurableObject {
     } else {
       return 'spectator';
     }
-    this.state.seats[seat] = crypto.randomUUID();
+    this.state.seats[seat] = token;
     await this.ctx.storage.put(STORAGE_KEY, this.state);
     return seat;
   }
