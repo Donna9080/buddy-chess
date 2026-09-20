@@ -196,7 +196,7 @@ out explicitly: **hot-seat live on the internet, first.**
     and immediately shows the current position, using a token stored in the
     browser and matched via `ws.serializeAttachment()`.
 
-- [ ] **T4.5 — Online UI + New Game**
+- [x] **T4.5 — Online UI + New Game** ([PR #19](https://github.com/Donna9080/buddy-chess/pull/19))
   - Depends on: T4.4, T2.1
   - Files: `public/online.html`, `public/js/online.js`
   - DoD: two different devices entering the same room code see each other's
