@@ -215,20 +215,24 @@ out explicitly: **hot-seat live on the internet, first.**
 
 ## Phase 5 — Tutor
 
-- [ ] **T5.1 — Move-quality explainer**
+- [x] **T5.1 — Move-quality explainer** ([PR #22](https://github.com/Donna9080/buddy-chess/pull/22)) — *scoping question
+  resolved: single-player coaching against the computer, not the two-player
+  online + narrator version*
   - Depends on: T3.1
-  - Files: `public/js/tutor.js`
+  - Files: `public/js/tutor.js`, `public/js/ai.js` (exposed `evaluateMoves`
+    so ties can be broken toward a teachable move)
   - DoD: for any position, produces the single best move plus one
     plain-English reason drawn from a short, recognizable set of categories
-    (material gain, check/checkmate, king safety, center control, piece
-    development). See ProductSpec §7 for the scoping decision this assumes —
-    flag it now if you want the two-player version instead.
+    (checkmate, capture/material gain, check, castling/king safety, center
+    control, piece development), falling back to a generic reason only when
+    none apply.
 
-- [ ] **T5.2 — Tutor picker + coaching UI**
+- [x] **T5.2 — Tutor picker + coaching UI** ([PR #22](https://github.com/Donna9080/buddy-chess/pull/22))
   - Depends on: T5.1
   - Files: `public/tutor.html`, `public/js/tutor.js`
-  - DoD: player picks a tutor persona (cosmetic only); the tutor's advice
-    appears clearly before or after each move without blocking play.
+  - DoD: player picks a tutor persona (cosmetic only), a color, and the
+    computer's difficulty; the tutor's advice appears clearly whenever it's
+    the player's turn, without blocking play.
 
 - [ ] **T5.3 — Deploy Tutor mode live**
   - Depends on: T5.2
