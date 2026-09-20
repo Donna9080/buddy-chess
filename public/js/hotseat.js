@@ -5,9 +5,10 @@ const boardEl = document.getElementById('board');
 const statusEl = document.getElementById('status');
 
 let position = createInitialPosition();
+let lastMove = null;
 
 function update() {
-  renderBoard({ position, container: boardEl, onMove: handleMove });
+  renderBoard({ position, container: boardEl, onMove: handleMove, lastMove });
 
   const mover = position.turn === 'w' ? 'White' : 'Black';
   const winner = position.turn === 'w' ? 'Black' : 'White';
@@ -22,6 +23,7 @@ function update() {
 
 function handleMove(move) {
   position = applyMove(position, move);
+  lastMove = move;
   update();
 }
 

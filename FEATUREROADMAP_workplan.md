@@ -124,7 +124,8 @@ out explicitly: **hot-seat live on the internet, first.**
   - DoD: Hot-Seat is playable start-to-finish at the public URL. **This is
     the milestone the brief prioritizes above everything else.**
 
-- [ ] **T2.5 — Highlight the most recent move** *(promoted from P1.5, round 1)*
+- [x] **T2.5 — Highlight the most recent move** *(promoted from P1.5, round 1)*
+  ([PR #11](https://github.com/Donna9080/buddy-chess/pull/11))
   - Depends on: T2.1, T2.2 *(needs an actual game loop to have a "last move"
     to highlight — the round-1 proposal listed T2.1 only, tightened here)*
   - Files: `public/js/board.js`, `public/css/base.css`

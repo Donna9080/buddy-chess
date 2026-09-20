@@ -158,6 +158,10 @@ main {
   outline-offset: -3px;
 }
 
+.square.last-move {
+  box-shadow: inset 0 0 0 999px var(--highlight-move);
+}
+
 .square.legal-target {
   cursor: pointer;
 }
