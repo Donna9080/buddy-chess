@@ -54,31 +54,35 @@ function minimax(position, depth, alpha, beta) {
   return best;
 }
 
-// Picks a move for whoever's turn it is in `position`, looking `depth` ply
-// ahead in total (depth 1 = just the computer's own move, depth 2 = the
-// computer's move plus the opponent's best reply, and so on).
-function chooseMove(position, depth) {
+// Scores every legal move for whoever's turn it is in `position`, looking
+// `depth` ply ahead in total. Exposed (not just the winner) so callers like
+// tutor.js can see ties instead of only the first-found best move.
+function evaluateMoves(position, depth) {
   const moves = generateLegalMoves(position);
-  if (moves.length === 0) return null;
-
   const maximizing = position.turn === 'w';
-  let bestMove = moves[0];
-  let bestScore = maximizing ? -Infinity : Infinity;
   let alpha = -Infinity;
   let beta = Infinity;
 
-  for (const move of moves) {
+  return moves.map((move) => {
     const score = minimax(applyMove(position, move), depth - 1, alpha, beta);
-    const better = maximizing ? score > bestScore : score < bestScore;
-    if (better) {
-      bestScore = score;
-      bestMove = move;
-    }
-    if (maximizing) alpha = Math.max(alpha, bestScore);
-    else beta = Math.min(beta, bestScore);
-  }
-
-  return bestMove;
+    if (maximizing) alpha = Math.max(alpha, score);
+    else beta = Math.min(beta, score);
+    return { move, score };
+  });
 }
 
-export { chooseMove };
+// Picks a move for whoever's turn it is in `position` (depth 1 = just the
+// computer's own move, depth 2 = its move plus the opponent's best reply,
+// and so on). Ties go to whichever move was generated first.
+function chooseMove(position, depth) {
+  const scored = evaluateMoves(position, depth);
+  if (scored.length === 0) return null;
+
+  const maximizing = position.turn === 'w';
+  return scored.reduce((best, current) => {
+    const better = maximizing ? current.score > best.score : current.score < best.score;
+    return better ? current : best;
+  }).move;
+}
+
+export { chooseMove, evaluateMoves };
