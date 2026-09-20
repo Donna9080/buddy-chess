@@ -1,6 +1,10 @@
-// online.js — the Online mode client. Token management + the WebSocket
-// connection live here first (T4.4); the room-code entry screen and the
-// actual game UI wiring land in T4.5.
+// online.js — the Online mode client. The server is the referee: this file
+// never applies a move locally — it sends the player's intended move to
+// the Durable Object and only updates the board once the server broadcasts
+// the resulting state back. See ProductSpec.md §6.4.
+
+import { getStatus } from './rules.js';
+import { renderBoard } from './board.js';
 
 function tokenStorageKey(roomCode) {
   return `buddy-online-token-${roomCode}`;
@@ -32,5 +36,82 @@ function connectToRoom(roomCode) {
   const protocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
   return new WebSocket(`${protocol}//${location.host}/room/${roomCode}?token=${token}`);
 }
+
+const joinEl = document.getElementById('join');
+const gameEl = document.getElementById('game');
+const roomCodeInput = document.getElementById('room-code-input');
+const joinButton = document.getElementById('join-button');
+const roomCodeDisplay = document.getElementById('room-code-display');
+const seatLabel = document.getElementById('seat-label');
+const boardEl = document.getElementById('board');
+const statusEl = document.getElementById('status');
+const newGameButton = document.getElementById('new-game-button');
+
+const SEAT_LABELS = {
+  w: 'You are White',
+  b: 'You are Black',
+  spectator: "You're watching as a spectator",
+};
+
+let ws = null;
+let mySeat = null;
+
+function normalizeRoomCode(raw) {
+  return raw.trim().toUpperCase().replace(/[^A-Z0-9]/g, '');
+}
+
+function joinRoom(roomCode) {
+  ws = connectToRoom(roomCode);
+
+  ws.addEventListener('message', (event) => {
+    const message = JSON.parse(event.data);
+    if (message.type === 'seated') {
+      mySeat = message.payload.seat;
+      seatLabel.textContent = SEAT_LABELS[mySeat];
+    } else if (message.type === 'state') {
+      render(message.payload);
+    } else if (message.type === 'error') {
+      statusEl.textContent = message.payload;
+    }
+  });
+
+  roomCodeDisplay.textContent = roomCode;
+  joinEl.hidden = true;
+  gameEl.hidden = false;
+}
+
+function render(state) {
+  const { position, lastMove } = state;
+  const interactive = mySeat === position.turn;
+
+  renderBoard({
+    position,
+    container: boardEl,
+    lastMove,
+    interactive,
+    onMove: (move) => ws.send(JSON.stringify({ type: 'move', payload: move })),
+  });
+
+  const mover = position.turn === 'w' ? 'White' : 'Black';
+  const winner = position.turn === 'w' ? 'Black' : 'White';
+  const messages = {
+    checkmate: `Checkmate — ${winner} wins!`,
+    stalemate: 'Stalemate — the game is a draw.',
+    check: `${mover} to move — check!`,
+    normal: `${mover} to move`,
+  };
+  statusEl.textContent = messages[getStatus(position)];
+}
+
+joinButton.addEventListener('click', () => {
+  const roomCode = normalizeRoomCode(roomCodeInput.value);
+  if (!roomCode) return;
+  joinRoom(roomCode);
+});
+
+newGameButton.addEventListener('click', () => {
+  if (!ws) return;
+  ws.send(JSON.stringify({ type: 'newGame' }));
+});
 
 export { getOrCreateToken, connectToRoom };

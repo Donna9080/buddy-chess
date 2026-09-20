@@ -144,7 +144,7 @@ body {
   cursor: pointer;
 }
 
-#start-button {
+.primary-button {
   padding: 0.6em 1.5em;
   font: inherit;
   font-size: 1rem;
@@ -154,6 +154,24 @@ body {
   background: var(--highlight-selected);
   color: var(--app-bg);
   cursor: pointer;
+}
+
+.room-code-input {
+  padding: 0.5em 0.75em;
+  font: inherit;
+  font-size: 1.1rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  border: 1px solid var(--board-border);
+  border-radius: 8px;
+  background: var(--app-bg);
+  color: var(--app-fg);
+}
+
+.room-banner {
+  display: flex;
+  gap: 0.75rem;
+  align-items: baseline;
 }
 
 main {
