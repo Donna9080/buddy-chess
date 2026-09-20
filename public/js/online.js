@@ -78,6 +78,10 @@ function joinRoom(roomCode) {
     if (message.type === 'seated') {
       mySeat = message.payload.seat;
       seatLabel.textContent = SEAT_LABELS[mySeat];
+      // Only a seated player can reset the game (the server enforces this
+      // too) — hiding the button for spectators avoids a dead click with no
+      // feedback, which is exactly the bug this fixes.
+      newGameButton.hidden = mySeat === 'spectator';
     } else if (message.type === 'state') {
       render(message.payload);
     } else if (message.type === 'error') {
