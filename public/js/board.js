@@ -12,8 +12,11 @@ const PIECE_GLYPHS = {
 
 const PROMOTION_CHOICES = ['Q', 'R', 'B', 'N'];
 
-function renderBoard({ position, container, onMove, lastMove = null }) {
-  const legalMoves = generateLegalMoves(position);
+// interactive=false renders a fully inert board (no square responds to a
+// click at all) — used by vscomputer.js while it's the computer's turn, so
+// the player can't pick up and move the computer's own pieces.
+function renderBoard({ position, container, onMove, lastMove = null, interactive = true }) {
+  const legalMoves = interactive ? generateLegalMoves(position) : [];
   let selectedSquare = null;
 
   function draw() {
@@ -31,7 +34,7 @@ function renderBoard({ position, container, onMove, lastMove = null }) {
       ? []
       : legalMoves.filter((move) => move.from === selectedSquare && move.to === square);
     const isTarget = targets.length > 0;
-    const isSelectable = piece !== null && pieceColor(piece) === position.turn;
+    const isSelectable = interactive && piece !== null && pieceColor(piece) === position.turn;
 
     const el = document.createElement('button');
     el.type = 'button';
