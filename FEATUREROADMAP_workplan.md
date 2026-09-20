@@ -234,7 +234,7 @@ out explicitly: **hot-seat live on the internet, first.**
     computer's difficulty; the tutor's advice appears clearly whenever it's
     the player's turn, without blocking play.
 
-- [ ] **T5.3 — Deploy Tutor mode live**
+- [x] **T5.3 — Deploy Tutor mode live** ([PR #23](https://github.com/Donna9080/buddy-chess/pull/23))
   - Depends on: T5.2
   - Files: `public/index.html` (mode picker)
   - DoD: reachable and fully working from the public URL.
