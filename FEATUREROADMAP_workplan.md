@@ -137,7 +137,7 @@ out explicitly: **hot-seat live on the internet, first.**
 
 ## Phase 3 — Vs Computer
 
-- [ ] **T3.1 — Minimax + alpha-beta engine**
+- [x] **T3.1 — Minimax + alpha-beta engine** ([PR #12](https://github.com/Donna9080/buddy-chess/pull/12))
   - Depends on: T0.2, T0.3
   - Files: `public/js/ai.js`
   - DoD: given any legal position, returns a legal move. At depth 2, always
