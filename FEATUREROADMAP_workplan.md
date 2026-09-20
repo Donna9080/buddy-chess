@@ -118,7 +118,7 @@ out explicitly: **hot-seat live on the internet, first.**
     time; the chosen theme is remembered on that browser for next visit;
     every theme keeps legal-move highlighting clearly visible.
 
-- [ ] **T2.4 — Deploy Hot-Seat live**
+- [x] **T2.4 — Deploy Hot-Seat live** ([PR #10](https://github.com/Donna9080/buddy-chess/pull/10), [live](https://buddy-chess.dolgorsureng.workers.dev))
   - Depends on: T2.2, T2.3
   - Files: `public/index.html` (mode picker linking to Hot-Seat)
   - DoD: Hot-Seat is playable start-to-finish at the public URL. **This is
