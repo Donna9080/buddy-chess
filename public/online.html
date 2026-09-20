@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Buddy — Vs Computer</title>
+  <title>Buddy — Online</title>
   <link rel="stylesheet" href="css/base.css">
   <link rel="stylesheet" href="css/theme-adult.css">
   <link rel="stylesheet" href="css/theme-children.css">
@@ -14,33 +14,33 @@
 <body class="theme-adult">
   <header class="app-header">
     <a href="index.html">Buddy</a>
-    <h1>Vs Computer</h1>
+    <h1>Online</h1>
     <div id="theme-switcher" class="theme-switcher" aria-label="Choose a theme"></div>
   </header>
 
   <main>
-    <section id="setup" class="setup">
-      <fieldset>
-        <legend>Play as</legend>
-        <label><input type="radio" name="color" value="w" checked> White</label>
-        <label><input type="radio" name="color" value="b"> Black</label>
-      </fieldset>
-      <fieldset>
-        <legend>Difficulty</legend>
-        <label><input type="radio" name="difficulty" value="1"> Easy</label>
-        <label><input type="radio" name="difficulty" value="2" checked> Medium</label>
-        <label><input type="radio" name="difficulty" value="3"> Hard</label>
-      </fieldset>
-      <button type="button" id="start-button" class="primary-button">Start Game</button>
+    <section id="join" class="setup">
+      <p>Type any room code — the first person to use it plays White, the
+        second plays Black. Share the same code with a friend to play them.</p>
+      <label>
+        Room code
+        <input type="text" id="room-code-input" class="room-code-input" maxlength="12" placeholder="e.g. BUDDY42">
+      </label>
+      <button type="button" id="join-button" class="primary-button">Join Room</button>
     </section>
 
     <section id="game" hidden>
+      <div class="room-banner">
+        <span>Room: <strong id="room-code-display"></strong></span>
+        <span id="seat-label"></span>
+      </div>
       <div id="board" class="board" aria-label="Chess board"></div>
       <p id="status" class="status" aria-live="polite"></p>
+      <button type="button" id="new-game-button" class="primary-button">New Game</button>
     </section>
   </main>
 
   <script type="module" src="js/theme-switcher.js"></script>
-  <script type="module" src="js/vscomputer.js"></script>
+  <script type="module" src="js/online.js"></script>
 </body>
 </html>

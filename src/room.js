@@ -13,6 +13,7 @@ function createEmptyState() {
   return {
     position: createInitialPosition(),
     seats: { w: null, b: null },
+    lastMove: null,
   };
 }
 
@@ -96,6 +97,18 @@ export class Room extends DurableObject {
       }
 
       this.state.position = applyMove(this.state.position, parsed.payload);
+      this.state.lastMove = parsed.payload;
+      await this.ctx.storage.put(STORAGE_KEY, this.state);
+      this.broadcast({ type: 'state', payload: this.state });
+      return;
+    }
+
+    if (parsed.type === 'newGame') {
+      const { seat } = ws.deserializeAttachment() ?? {};
+      if (seat !== 'w' && seat !== 'b') return; // spectators can't reset the game
+
+      this.state.position = createInitialPosition();
+      this.state.lastMove = null;
       await this.ctx.storage.put(STORAGE_KEY, this.state);
       this.broadcast({ type: 'state', payload: this.state });
     }
