@@ -164,7 +164,7 @@ out explicitly: **hot-seat live on the internet, first.**
 
 ## Phase 4 — Online Rooms
 
-- [ ] **T4.1 — Durable Object scaffold**
+- [x] **T4.1 — Durable Object scaffold** ([PR #15](https://github.com/Donna9080/buddy-chess/pull/15))
   - Depends on: T0.2, T0.3, T1.1
   - Files: `src/worker.js`, `src/room.js`, `wrangler.jsonc` (Durable Object
     binding + `new_sqlite_classes` migration)
