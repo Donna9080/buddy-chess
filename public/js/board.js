@@ -12,7 +12,7 @@ const PIECE_GLYPHS = {
 
 const PROMOTION_CHOICES = ['Q', 'R', 'B', 'N'];
 
-function renderBoard({ position, container, onMove }) {
+function renderBoard({ position, container, onMove, lastMove = null }) {
   const legalMoves = generateLegalMoves(position);
   let selectedSquare = null;
 
@@ -39,6 +39,7 @@ function renderBoard({ position, container, onMove }) {
     if (piece) el.classList.add('has-piece');
     if (square === selectedSquare) el.classList.add('selected');
     if (isTarget) el.classList.add('legal-target');
+    if (lastMove && (square === lastMove.from || square === lastMove.to)) el.classList.add('last-move');
 
     if (piece) {
       const glyph = document.createElement('span');
