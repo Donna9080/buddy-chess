@@ -110,6 +110,8 @@ function render(state) {
     lastMove,
     interactive,
     onMove: (move) => ws.send(JSON.stringify({ type: 'move', payload: move })),
+    // Spectators (mySeat === 'spectator') get White's view by default.
+    orientation: mySeat === 'b' ? 'b' : 'w',
   });
 
   const mover = position.turn === 'w' ? 'White' : 'Black';

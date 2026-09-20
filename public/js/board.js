@@ -16,14 +16,24 @@ const FILE_LETTERS = 'abcdefgh';
 // interactive=false renders a fully inert board (no square responds to a
 // click at all) — used by vscomputer.js while it's the computer's turn, so
 // the player can't pick up and move the computer's own pieces.
-function renderBoard({ position, container, onMove, lastMove = null, interactive = true }) {
+//
+// orientation='w' (default) draws White's home rank at the bottom, as usual.
+// orientation='b' draws the board rotated 180° — Black's home rank at the
+// bottom — so a player can see the board from their own side. This only
+// changes the order squares are drawn in and which edge coordinate labels
+// land on; the square indices used everywhere else (moves, highlights,
+// rules.js) are completely unaffected.
+function renderBoard({ position, container, onMove, lastMove = null, interactive = true, orientation = 'w' }) {
   const legalMoves = interactive ? generateLegalMoves(position) : [];
+  const flipped = orientation === 'b';
   let selectedSquare = null;
 
   function draw() {
     container.innerHTML = '';
-    for (let rank = 7; rank >= 0; rank--) {
-      for (let file = 0; file < 8; file++) {
+    for (let i = 0; i < 8; i++) {
+      const rank = flipped ? i : 7 - i;
+      for (let j = 0; j < 8; j++) {
+        const file = flipped ? 7 - j : j;
         container.appendChild(buildSquare(squareOf(file, rank)));
       }
     }
@@ -58,16 +68,19 @@ function renderBoard({ position, container, onMove, lastMove = null, interactive
       el.appendChild(glyph);
     }
 
-    // Standard board coordinates: file letters along the bottom rank, rank
-    // numbers along the left file — purely a display label, not a click
-    // target of any kind.
-    if (rankOf(square) === 0) {
+    // Standard board coordinates: file letters along the visually-bottom
+    // rank, rank numbers along the visually-left file — which edge that is
+    // in absolute rank/file terms flips along with the board itself, so the
+    // labels always sit on the edge the player is actually looking at.
+    const bottomRank = flipped ? 7 : 0;
+    const leftFile = flipped ? 7 : 0;
+    if (rankOf(square) === bottomRank) {
       const fileLabel = document.createElement('span');
       fileLabel.className = 'coordinate file';
       fileLabel.textContent = FILE_LETTERS[fileOf(square)];
       el.appendChild(fileLabel);
     }
-    if (fileOf(square) === 0) {
+    if (fileOf(square) === leftFile) {
       const rankLabel = document.createElement('span');
       rankLabel.className = 'coordinate rank';
       rankLabel.textContent = String(rankOf(square) + 1);
