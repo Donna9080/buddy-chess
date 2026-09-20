@@ -2,10 +2,45 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Buddy</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Buddy — Chess for Friends</title>
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/theme-adult.css">
+  <link rel="stylesheet" href="css/theme-children.css">
+  <link rel="stylesheet" href="css/theme-cool.css">
+  <link rel="stylesheet" href="css/theme-messy.css">
+  <link rel="stylesheet" href="css/theme-professional.css">
 </head>
-<body>
-  <h1>Buddy</h1>
-  <p>Scaffold placeholder — the real landing page arrives in Phase 1.</p>
+<body class="theme-adult">
+  <header class="app-header">
+    <a href="index.html">Buddy</a>
+    <div id="theme-switcher" class="theme-switcher" aria-label="Choose a theme"></div>
+  </header>
+
+  <main>
+    <h1>Chess, with a friend, right now</h1>
+    <p class="tagline">No accounts, no setup — just pick a way to play.</p>
+
+    <div class="mode-grid">
+      <a class="mode-card" href="hotseat.html">
+        <span class="mode-title">Hot-Seat</span>
+        <span class="mode-desc">Two people, one screen, take turns.</span>
+      </a>
+      <div class="mode-card mode-card--soon" aria-disabled="true">
+        <span class="mode-title">Vs Computer</span>
+        <span class="mode-desc">Coming soon</span>
+      </div>
+      <div class="mode-card mode-card--soon" aria-disabled="true">
+        <span class="mode-title">Online</span>
+        <span class="mode-desc">Coming soon</span>
+      </div>
+      <div class="mode-card mode-card--soon" aria-disabled="true">
+        <span class="mode-title">Tutor</span>
+        <span class="mode-desc">Coming soon</span>
+      </div>
+    </div>
+  </main>
+
+  <script type="module" src="js/theme-switcher.js"></script>
 </body>
 </html>
