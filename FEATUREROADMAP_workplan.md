@@ -52,9 +52,13 @@ purpose.
     of **20** (depth 1), **400** (depth 2), and **8,902** (depth 3), exactly.
     This must be green before Phase 2 starts.
 
-- [ ] **T0.4 — Detect insufficient-material draws** *(promoted from P1.1, round 1)*
+- [x] **T0.4 — Detect insufficient-material draws** *(promoted from P1.1, round 1)*
+  ([PR #25](https://github.com/Donna9080/buddy-chess/pull/25))
   - Depends on: T0.2
-  - Files: `public/js/rules.js`
+  - Files: `public/js/rules.js`, plus `hotseat.js`/`vscomputer.js`/`online.js`/
+    `tutor.js` (display the new status; otherwise a player would see the
+    literal text "undefined") and `vscomputer.js`/`tutor.js` (the computer
+    also stops moving once the game is decided this way)
   - DoD: `getStatus` returns a draw (e.g. `'draw-insufficient-material'`) for
     positions where neither side can possibly deliver checkmate with the
     pieces left on the board (king vs. king; king+bishop vs. king;
@@ -62,8 +66,8 @@ purpose.
     ProductSpec §9 excludes — this rule is not excluded, it just hadn't been
     built yet. Add a covering test alongside T0.5.
 
-- [ ] **T0.5 — Direct tests for castling, en passant, and promotion**
-  *(promoted from P1.2, round 1)*
+- [x] **T0.5 — Direct tests for castling, en passant, and promotion**
+  *(promoted from P1.2, round 1)* ([PR #25](https://github.com/Donna9080/buddy-chess/pull/25))
   - Depends on: T0.2, T0.3
   - Files: `public/js/rules.test.js`
   - DoD: `npm test` lists individually named, passing tests that isolate
