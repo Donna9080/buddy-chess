@@ -146,7 +146,7 @@ out explicitly: **hot-seat live on the internet, first.**
     depth 1 (i.e., it changes the chosen move on at least one test position,
     proving it isn't just picking randomly).
 
-- [ ] **T3.2 — Vs Computer UI**
+- [x] **T3.2 — Vs Computer UI** ([PR #13](https://github.com/Donna9080/buddy-chess/pull/13))
   - Depends on: T3.1, T2.2
   - Files: `public/vscomputer.html`, `public/js/vscomputer.js`
   - DoD: before the game starts, the player picks White or Black and a
