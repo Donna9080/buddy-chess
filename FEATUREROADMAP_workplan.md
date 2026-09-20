@@ -203,7 +203,7 @@ out explicitly: **hot-seat live on the internet, first.**
     moves appear live, with no page refresh needed. A **New Game** button
     resets the board for both players in place (same room code, same seats).
 
-- [x] **T4.6 — Deploy Online rooms live** (PR pending) — *verified against the live
+- [x] **T4.6 — Deploy Online rooms live** ([PR #20](https://github.com/Donna9080/buddy-chess/pull/20)) — *verified against the live
   production URL with two separate browser tabs/tokens; true cross-device
   (phone + laptop) confirmation is still worth doing yourself, see below*
   - Depends on: T4.5
