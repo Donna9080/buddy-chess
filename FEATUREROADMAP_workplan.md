@@ -189,7 +189,7 @@ out explicitly: **hot-seat live on the internet, first.**
     against `rules.js` on the server before being applied or broadcast — a
     hand-crafted illegal move sent directly to the server is rejected.
 
-- [ ] **T4.4 — Reconnect-safe player identity**
+- [x] **T4.4 — Reconnect-safe player identity** ([PR #18](https://github.com/Donna9080/buddy-chess/pull/18))
   - Depends on: T4.3
   - Files: `public/js/online.js`, `src/room.js`
   - DoD: refreshing the page reconnects the same browser to the same seat
