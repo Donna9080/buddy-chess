@@ -5,6 +5,7 @@
 
 import { getStatus } from './rules.js';
 import { renderBoard } from './board.js';
+import { playMoveSound } from './sound.js';
 
 function tokenStorageKey(roomCode) {
   return `buddy-online-token-${roomCode}`;
@@ -55,6 +56,15 @@ const SEAT_LABELS = {
 
 let ws = null;
 let mySeat = null;
+// undefined = no state received yet (skip the sound on the initial
+// snapshot); a real move key that differs from the last one is what
+// actually triggers the sound — a New Game reset (lastMove -> null)
+// deliberately does not play the move sound.
+let lastMoveKey;
+
+function moveKeyFor(move) {
+  return move ? `${move.from}-${move.to}-${move.promotion ?? ''}` : null;
+}
 
 function normalizeRoomCode(raw) {
   return raw.trim().toUpperCase().replace(/[^A-Z0-9]/g, '');
@@ -83,6 +93,12 @@ function joinRoom(roomCode) {
 function render(state) {
   const { position, lastMove } = state;
   const interactive = mySeat === position.turn;
+
+  const moveKey = moveKeyFor(lastMove);
+  if (lastMoveKey !== undefined && moveKey !== null && moveKey !== lastMoveKey) {
+    playMoveSound();
+  }
+  lastMoveKey = moveKey;
 
   renderBoard({
     position,

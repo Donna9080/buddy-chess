@@ -247,10 +247,15 @@ when we reach this phase** — no need to decide now:
 - Sound effect on move
 - Resign button, in Online mode
 
-- [ ] **T6.1 — Build the chosen extra**
-  - Depends on: whichever mode it applies to being live
-  - Files: TBD based on the choice
-  - DoD: TBD based on the choice — I'll write the specific bar once you pick.
+- [x] **T6.1 — Sound on move** ([PR #21](https://github.com/Donna9080/buddy-chess/pull/21))
+  - Depends on: T2.2, T3.2, T4.5 (all three playable modes)
+  - Files: `public/js/sound.js`, `public/js/hotseat.js`, `public/js/vscomputer.js`,
+    `public/js/online.js`
+  - DoD: a short sound plays after every move, in every mode (both sides in
+    Hot-Seat, the player's and the computer's moves in Vs Computer, both
+    players' moves in Online). Joining an Online room that's already mid-game
+    and pressing New Game must NOT play the sound — only a genuinely new move
+    does.
 
 ---
 
