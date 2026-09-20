@@ -129,6 +129,7 @@ function update() {
   const messages = {
     checkmate: `Checkmate — ${winner} wins!`,
     stalemate: 'Stalemate — the game is a draw.',
+    'draw-insufficient-material': "Draw — neither side has enough pieces left to checkmate.",
     check: `${mover} to move — check!`,
     normal: isPlayerTurn ? `Your move (${mover})` : 'Computer is thinking...',
   };
@@ -137,8 +138,10 @@ function update() {
   updateTutorPanel(isPlayerTurn, status);
 }
 
+const GAME_OVER_STATUSES = ['checkmate', 'stalemate', 'draw-insufficient-material'];
+
 function updateTutorPanel(isPlayerTurn, status) {
-  if (!isPlayerTurn || status === 'checkmate' || status === 'stalemate') {
+  if (!isPlayerTurn || GAME_OVER_STATUSES.includes(status)) {
     tutorPanelEl.textContent = '';
     return;
   }
@@ -158,8 +161,7 @@ function handlePlayerMove(move) {
 
 function maybeMakeComputerMove() {
   if (position.turn === playerColor) return;
-  const status = getStatus(position);
-  if (status === 'checkmate' || status === 'stalemate') return;
+  if (GAME_OVER_STATUSES.includes(getStatus(position))) return;
 
   setTimeout(() => {
     const move = chooseMove(position, searchDepth);

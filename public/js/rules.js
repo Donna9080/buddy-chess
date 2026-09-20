@@ -331,10 +331,21 @@ function isMoveLegal(position, move) {
   );
 }
 
+// King vs. king, or king plus a single bishop or knight vs. king — neither
+// side can force checkmate with what's left on the board. Deliberately
+// narrow (not same-color-bishops-on-both-sides or other rarer cases): this
+// covers the clear-cut positions, not every theoretical draw.
+function hasInsufficientMaterial(position) {
+  const nonKingPieces = position.board.filter((piece) => piece !== null && pieceType(piece) !== 'K');
+  if (nonKingPieces.length === 0) return true;
+  return nonKingPieces.length === 1 && ['B', 'N'].includes(pieceType(nonKingPieces[0]));
+}
+
 function getStatus(position) {
   const legalMoves = generateLegalMoves(position);
   const inCheck = isInCheck(position, position.turn);
   if (legalMoves.length === 0) return inCheck ? 'checkmate' : 'stalemate';
+  if (hasInsufficientMaterial(position)) return 'draw-insufficient-material';
   return inCheck ? 'check' : 'normal';
 }
 
