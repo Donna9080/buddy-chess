@@ -105,7 +105,10 @@ export class Room extends DurableObject {
 
     if (parsed.type === 'newGame') {
       const { seat } = ws.deserializeAttachment() ?? {};
-      if (seat !== 'w' && seat !== 'b') return; // spectators can't reset the game
+      if (seat !== 'w' && seat !== 'b') {
+        ws.send(JSON.stringify({ type: 'error', payload: 'Only players can start a new game' }));
+        return;
+      }
 
       this.state.position = createInitialPosition();
       this.state.lastMove = null;
