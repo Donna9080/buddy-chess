@@ -247,7 +247,7 @@ when we reach this phase** — no need to decide now:
 - Sound effect on move
 - Resign button, in Online mode
 
-- [x] **T6.1 — Sound on move** (PR pending)
+- [x] **T6.1 — Sound on move** ([PR #21](https://github.com/Donna9080/buddy-chess/pull/21))
   - Depends on: T2.2, T3.2, T4.5 (all three playable modes)
   - Files: `public/js/sound.js`, `public/js/hotseat.js`, `public/js/vscomputer.js`,
     `public/js/online.js`
