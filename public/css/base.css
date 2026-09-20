@@ -67,6 +67,53 @@ body {
   font-weight: bold;
 }
 
+.tagline {
+  margin: 0;
+  opacity: 0.8;
+}
+
+.mode-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 1rem;
+  width: 100%;
+  max-width: 640px;
+}
+
+.mode-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  padding: 1.25rem;
+  border: 2px solid var(--board-border);
+  border-radius: 10px;
+  background: var(--square-light);
+  color: var(--app-fg);
+  text-decoration: none;
+}
+
+.mode-card:hover {
+  outline: 3px solid var(--highlight-selected);
+}
+
+.mode-card--soon {
+  opacity: 0.55;
+  cursor: default;
+}
+
+.mode-card--soon:hover {
+  outline: none;
+}
+
+.mode-title {
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+.mode-desc {
+  font-size: 0.9rem;
+}
+
 main {
   display: flex;
   flex-direction: column;
