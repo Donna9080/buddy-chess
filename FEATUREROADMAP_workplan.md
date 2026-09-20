@@ -173,7 +173,7 @@ out explicitly: **hot-seat live on the internet, first.**
     same code across separate connections (verified with a logged internal
     ID).
 
-- [ ] **T4.2 — Room state + SQLite persistence**
+- [x] **T4.2 — Room state + SQLite persistence** ([PR #16](https://github.com/Donna9080/buddy-chess/pull/16))
   - Depends on: T4.1
   - Files: `src/room.js`
   - DoD: the board position, whose turn it is, and each seat's player token
