@@ -34,7 +34,13 @@ function renderBoard({ position, container, onMove, lastMove = null, interactive
       ? []
       : legalMoves.filter((move) => move.from === selectedSquare && move.to === square);
     const isTarget = targets.length > 0;
-    const isSelectable = interactive && piece !== null && pieceColor(piece) === position.turn;
+    // Not just "your piece, your turn" — it also has to actually have a
+    // legal move from here. Without this, a checkmated/stalemated king (or
+    // any fully pinned piece with nowhere legal to go) would still show a
+    // "selected" highlight leading nowhere, since it has no legal targets
+    // to reach either way.
+    const isSelectable = interactive && piece !== null && pieceColor(piece) === position.turn
+      && legalMoves.some((move) => move.from === square);
 
     const el = document.createElement('button');
     el.type = 'button';
