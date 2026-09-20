@@ -18,6 +18,14 @@
   box-sizing: border-box;
 }
 
+/* Without this, any element that also matches a `display`-setting class
+   rule (like .setup { display: flex }) would tie that rule's specificity
+   and win over the browser's default [hidden] behavior, since author
+   styles beat the UA stylesheet at equal specificity. */
+[hidden] {
+  display: none !important;
+}
+
 body {
   margin: 0;
   min-height: 100vh;
@@ -112,6 +120,40 @@ body {
 
 .mode-desc {
   font-size: 0.9rem;
+}
+
+.setup {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.25rem;
+}
+
+.setup fieldset {
+  display: flex;
+  gap: 1rem;
+  border: 1px solid var(--board-border);
+  border-radius: 8px;
+  padding: 0.75rem 1.25rem;
+}
+
+.setup label {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  cursor: pointer;
+}
+
+#start-button {
+  padding: 0.6em 1.5em;
+  font: inherit;
+  font-size: 1rem;
+  font-weight: bold;
+  border: 2px solid var(--board-border);
+  border-radius: 8px;
+  background: var(--highlight-selected);
+  color: var(--app-bg);
+  cursor: pointer;
 }
 
 main {
