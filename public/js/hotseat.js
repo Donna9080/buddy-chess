@@ -1,5 +1,6 @@
 import { createInitialPosition, applyMove, getStatus } from './rules.js';
 import { renderBoard } from './board.js';
+import { playMoveSound } from './sound.js';
 
 const boardEl = document.getElementById('board');
 const statusEl = document.getElementById('status');
@@ -24,6 +25,7 @@ function update() {
 function handleMove(move) {
   position = applyMove(position, move);
   lastMove = move;
+  playMoveSound();
   update();
 }
 

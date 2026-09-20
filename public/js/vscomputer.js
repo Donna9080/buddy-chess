@@ -1,6 +1,7 @@
 import { createInitialPosition, applyMove, getStatus } from './rules.js';
 import { renderBoard } from './board.js';
 import { chooseMove } from './ai.js';
+import { playMoveSound } from './sound.js';
 
 const setupEl = document.getElementById('setup');
 const gameEl = document.getElementById('game');
@@ -55,6 +56,7 @@ function update() {
 function handlePlayerMove(move) {
   position = applyMove(position, move);
   lastMove = move;
+  playMoveSound();
   update();
   maybeMakeComputerMove();
 }
@@ -69,6 +71,7 @@ function maybeMakeComputerMove() {
     if (!move) return;
     position = applyMove(position, move);
     lastMove = move;
+    playMoveSound();
     update();
   }, THINKING_DELAY_MS);
 }
