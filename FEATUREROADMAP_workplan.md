@@ -155,7 +155,7 @@ out explicitly: **hot-seat live on the internet, first.**
     The browser then plays the other color automatically, using the full
     rule set (promotion prompts, castling, etc.) exactly as Hot-Seat does.
 
-- [ ] **T3.3 — Deploy Vs Computer live**
+- [x] **T3.3 — Deploy Vs Computer live** ([PR #14](https://github.com/Donna9080/buddy-chess/pull/14))
   - Depends on: T3.2
   - Files: `public/index.html` (mode picker)
   - DoD: reachable and fully playable from the public URL.
