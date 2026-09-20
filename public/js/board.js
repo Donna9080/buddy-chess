@@ -11,6 +11,7 @@ const PIECE_GLYPHS = {
 };
 
 const PROMOTION_CHOICES = ['Q', 'R', 'B', 'N'];
+const FILE_LETTERS = 'abcdefgh';
 
 // interactive=false renders a fully inert board (no square responds to a
 // click at all) — used by vscomputer.js while it's the computer's turn, so
@@ -55,6 +56,22 @@ function renderBoard({ position, container, onMove, lastMove = null, interactive
       glyph.className = `piece piece-${pieceColor(piece)}`;
       glyph.textContent = PIECE_GLYPHS[piece];
       el.appendChild(glyph);
+    }
+
+    // Standard board coordinates: file letters along the bottom rank, rank
+    // numbers along the left file — purely a display label, not a click
+    // target of any kind.
+    if (rankOf(square) === 0) {
+      const fileLabel = document.createElement('span');
+      fileLabel.className = 'coordinate file';
+      fileLabel.textContent = FILE_LETTERS[fileOf(square)];
+      el.appendChild(fileLabel);
+    }
+    if (fileOf(square) === 0) {
+      const rankLabel = document.createElement('span');
+      rankLabel.className = 'coordinate rank';
+      rankLabel.textContent = String(rankOf(square) + 1);
+      el.appendChild(rankLabel);
     }
 
     // A square that is neither a piece the player to move can pick up, nor

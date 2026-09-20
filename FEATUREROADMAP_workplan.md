@@ -267,11 +267,52 @@ when we reach this phase** — no need to decide now:
 
 ---
 
+## Phase 7 — Premium UI Redesign
+
+Requested after the original 5-theme system had been live for a while: drop
+it for a simpler dark/light system, add board coordinates, rename the four
+modes on-screen, and give the whole thing a more premium visual treatment.
+No game logic changed anywhere in this phase — every file touched is HTML,
+CSS, or purely-additive rendering code.
+
+- [x] **T7.1 — Dark/light design system, board coordinates, mode renames,
+  premium visual redesign**
+  - Depends on: T2.3 (replaces its 5-theme system entirely)
+  - Files: `public/css/base.css` (full rewrite), removed `theme-adult.css` /
+    `theme-children.css` / `theme-cool.css` / `theme-messy.css` /
+    `theme-professional.css`, `public/js/theme-switcher.js` (rewritten as a
+    dark/light toggle instead of a 5-way picker), `public/js/board.js`
+    (added file/rank coordinate labels — additive only, no change to move
+    generation or the `renderBoard` call contract), all five HTML pages
+    (removed the theme stylesheet links, added the Google Fonts link for
+    Playfair Display, swapped the theme-picker row for a single toggle
+    button, updated `<title>`/`<h1>` text to the new mode names, wrapped
+    boards in a `.board-wrapper` card, added a `.game-area` layout class for
+    the three setup-then-game pages)
+  - DoD: exactly two visual modes (dark, sophisticated; light, clean), each
+    with correct contrast and legible legal-move highlighting; a single
+    toggle button switches between them and the choice is remembered
+    per-browser; new visitors with no saved choice follow their OS's
+    light/dark preference; standard a–h / 1–8 coordinates visible around
+    every board; all four modes show their new names (Play Together, Play
+    Computer, Play Online, Chess Coach) everywhere a player would see them,
+    while the underlying page URLs and all game logic stay exactly as they
+    were.
+  - Verified in a browser: full pass across all five pages, both color
+    modes, desktop and mobile viewports — home screen, all four setup
+    screens, and gameplay (a real move in each mode, castling, and a full
+    Fool's mate checkmate sequence) all confirmed working with no visual
+    regressions and no console errors; `npm test` (10/10) confirms
+    `rules.js` itself was never touched.
+
+---
+
 ## Open questions this plan assumes an answer to
 
 Full detail in [ProductSpec.md §10](ProductSpec.md#10-decisions-i-made-that-need-your-ok).
-Quick list: 5 themes vs. 4, Tutor mode scope (single-player vs. two-player +
-tutor), difficulty→depth mapping, and the Phase 6 extra choice.
+Quick list: Tutor mode scope (single-player vs. two-player + tutor),
+difficulty→depth mapping, and the Phase 6 extra choice. (The theme-count
+question is moot — Phase 7 replaced the theme system entirely.)
 
 ---
 

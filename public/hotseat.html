@@ -3,23 +3,23 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Buddy — Hot-Seat</title>
+  <title>Buddy — Play Together</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/base.css">
-  <link rel="stylesheet" href="css/theme-adult.css">
-  <link rel="stylesheet" href="css/theme-children.css">
-  <link rel="stylesheet" href="css/theme-cool.css">
-  <link rel="stylesheet" href="css/theme-messy.css">
-  <link rel="stylesheet" href="css/theme-professional.css">
 </head>
-<body class="theme-adult">
+<body>
   <header class="app-header">
-    <a href="index.html">Buddy</a>
-    <h1>Hot-Seat</h1>
-    <div id="theme-switcher" class="theme-switcher" aria-label="Choose a theme"></div>
+    <a class="brand" href="index.html">Buddy</a>
+    <h1>Play Together</h1>
+    <button id="theme-toggle" class="theme-toggle" type="button" aria-label="Toggle dark mode"></button>
   </header>
 
   <main>
-    <div id="board" class="board" aria-label="Chess board"></div>
+    <div class="board-wrapper">
+      <div id="board" class="board" aria-label="Chess board"></div>
+    </div>
     <p id="status" class="status" aria-live="polite"></p>
   </main>
 

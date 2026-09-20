@@ -12,24 +12,25 @@ By **Dolgorsuren Gunreg** *(if that's not quite right, tell me and I'll fix it)*
 
 ## The four ways to play
 
-1. **Hot-Seat** — two people share one screen and take turns.
-2. **Vs Computer** — you pick White or Black and a difficulty level; the browser
+1. **Play Together** — two people share one screen and take turns.
+2. **Play Computer** — you pick White or Black and a difficulty level; the browser
    plays the other side.
-3. **Online** — two people type the same room code on two different devices and
+3. **Play Online** — two people type the same room code on two different devices and
    watch each other's moves live.
-4. **Tutor** — pick a tutor persona and get a plain-English explanation of the
+4. **Chess Coach** — pick a coach persona and get a plain-English explanation of the
    best move in every position, so you actually learn *why*.
 
 Every mode enforces full, legal chess: check, checkmate, stalemate, castling,
-en passant, and pawn promotion. There is no way to make an illegal move — the
-board simply won't let you.
+en passant, pawn promotion, and draws by insufficient material. There is no
+way to make an illegal move — the board simply won't let you.
 
 ## The look
 
-Buddy ships with **five visual themes** you can switch between at any time:
-Kids, Adult/Classic, Cool, Messy/Fun, and Professional. The goal is that a
-7-year-old and a 70-year-old can both open Buddy and feel like it was made
-for them.
+Buddy has a premium chess aesthetic with a single **dark/light toggle** —
+dark mode is sophisticated (deep charcoal, warm gold accents), light mode is
+clean and elegant (warm cream, a wood-toned board). With no explicit choice
+made, it follows your device's own light/dark setting. Every board shows
+standard a–h / 1–8 coordinates.
 
 ## Tech stack, in plain English
 
@@ -52,10 +53,13 @@ Full explanations of every term above, and many more, are in
 
 ## Status
 
-🚧 Phase 0 (rules engine) and Phase 1 (deploy skeleton) are done. The live
-site currently shows a placeholder — Hot-Seat mode is next.
+✅ All four modes are built, tested, and live. The rules engine, the
+computer opponent, and the online multiplayer server are all done. The
+optional "sound on move" extra is in too. Tutor mode's scope (single-player
+coaching vs. an online + narrator version) is the one open question — see
+[ProductSpec.md §10](ProductSpec.md#10-decisions-i-made-that-need-your-ok).
 
-## Running it locally (once Phase 1 is built)
+## Running it locally
 
 ```bash
 npm install
@@ -64,10 +68,10 @@ npx wrangler dev
 
 This will open a local copy of Buddy at `http://localhost:8787`.
 
-## Deploying (once Phase 1 is built)
+## Deploying
 
 ```bash
 npx wrangler deploy
 ```
 
-This publishes Buddy to a free `*.workers.dev` URL.
+This publishes Buddy to the live `*.workers.dev` URL.

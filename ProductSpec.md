@@ -5,9 +5,16 @@ is. It's written for someone with no coding background, so every technical
 term is explained in plain English the first time it shows up, and again in
 the [Glossary](#glossary) at the bottom.
 
-No Figma file was available for this project, so the four/five look-and-feel
-themes described below are my own design proposal, not a pixel-for-pixel spec.
-Treat them as a strong starting point to react to, not a locked design.
+No Figma file was available for this project. The original visual design was
+a 5-theme system (§3 below described it); it was later replaced, at your
+request, with a simpler dark/light system and a full visual redesign — see
+the updated §3 for what's actually live today.
+
+**Display names vs. internal names:** the four modes are shown to players as
+Play Together, Play Computer, Play Online, and Chess Coach. Internally — file
+names, code, this document's section headers — they're still called Hot-Seat,
+Vs Computer, Online, and Tutor; only the on-screen labels changed, to avoid
+unnecessary churn to URLs and code for a rename that's purely cosmetic.
 
 ---
 
@@ -23,11 +30,11 @@ reading a rulebook first.
 
 ## 2. The four modes
 
-### 2.1 Hot-Seat
+### 2.1 Hot-Seat (shown to players as "Play Together")
 Two people, one screen, one keyboard/mouse. Players alternate turns on the
 same board. No setup beyond opening the page.
 
-### 2.2 Vs Computer
+### 2.2 Vs Computer (shown to players as "Play Computer")
 The player chooses:
 - **Color** — White or Black.
 - **Difficulty** — Easy / Medium / Hard (see §5 for what that means
@@ -36,7 +43,7 @@ The player chooses:
 The browser plays the other color automatically. The computer must always
 respond with a **legal** move within **2 seconds**.
 
-### 2.3 Online
+### 2.3 Online (shown to players as "Play Online")
 Two players type the same **room code** on two different devices.
 - Whoever connects to a room **first** plays White.
 - Whoever connects **second** plays Black.
@@ -49,7 +56,7 @@ Two players type the same **room code** on two different devices.
 - A **New Game** button resets the board for both players without needing a
   new room code.
 
-### 2.4 Tutor
+### 2.4 Tutor (shown to players as "Chess Coach")
 The player picks a **tutor persona** (a cosmetic character/avatar — the advice
 underneath is the same regardless of which one you pick). While you play, the
 tutor tells you which move is objectively best in the current position and
@@ -59,25 +66,49 @@ full design and an assumption I'm flagging for your review.
 
 ---
 
-## 3. The look — five themes
+## 3. The look — dark & light mode
 
-> The original brief mentioned both "4 versions" and five names (children,
-> adult, cool, messy, professional). I've kept all **five** as distinct
-> themes because each has a genuinely different personality — say the word
-> and I'll cut one down to four instead.
+The original design was a 5-theme system (Kids, Adult, Cool, Messy,
+Professional). At your request that was replaced with a single, more
+polished **premium chess aesthetic** in exactly two modes — dark and light —
+plus board coordinates and renamed modes. This section describes what's
+actually live today.
 
-| Theme | Who it's for | Personality |
-|---|---|---|
-| **Kids** | Children, first-time players | Big rounded pieces, bright primary colors, playful sound-adjacent visual cues, oversized buttons. |
-| **Adult / Classic** | Default, general audience | Traditional wood-and-cream board colors, serif headings, calm and familiar. |
-| **Cool** | Teens/young adults | Dark background, neon accent colors, glowing move highlights, modern sans-serif. |
-| **Messy / Fun** | Anyone who wants personality | Hand-drawn-style borders, sketchy piece outlines, warm scrapbook palette. |
-| **Professional** | Adults who want a minimal look | Monochrome board, thin lines, no decoration, high information density. |
+**One visual design, two color modes:**
+- **Light** — warm off-white background, a wood-toned board (cream and
+  warm brown squares), near-black text, a muted gold accent color. Meant to
+  read as clean and elegant.
+- **Dark** — deep charcoal background (not pure black), cooler dark-gray
+  board squares, soft off-white text, the same gold accent brightened for
+  contrast. Meant to read as sophisticated rather than just "inverted light
+  mode."
 
-The theme picker is available from every screen and is remembered between
-visits (stored in the browser only — no account needed). Themes only change
-colors, fonts, and decoration — every theme must remain fully legible and
-playable; none of them may hide or obscure legal-move highlighting.
+**How the mode is chosen:** a single toggle button (sun/moon icon) in the
+header. With no explicit choice made yet, the page follows the visitor's
+operating-system light/dark preference automatically; clicking the toggle
+overrides that and is remembered per browser (`localStorage`, no account
+needed) from then on.
+
+**Typography:** headings and the "Buddy" wordmark use **Playfair Display** (a
+serif display typeface loaded from Google Fonts) for a distinctive, premium
+feel; body text and UI chrome (buttons, labels, status text) use the
+browser's own system font stack for speed and consistency with the rest of
+the OS. This is the one external network dependency in the whole project —
+everything else (rules engine, sound, icons) is still hand-built with zero
+libraries, per the original brief; a font was judged worth the exception
+because "strong typography" was an explicit, named requirement of the
+redesign.
+
+**Board coordinates:** file letters (a–h) along the bottom rank and rank
+numbers (1–8) along the left file, shown as small labels inside the edge
+squares themselves (not a separate border row/column) — the same treatment
+most chess sites use. Purely a rendering addition in `board.js`; it doesn't
+touch move generation, legality, or any other game logic.
+
+**Mode icons:** each mode card on the home screen uses an actual chess piece
+glyph as its icon (two pawns for Play Together, a knight for Play Computer, a
+queen for Play Online, a bishop for Chess Coach) rather than generic or
+mismatched icons — deliberately kept "in-universe" for a chess app.
 
 ---
 
@@ -268,11 +299,13 @@ flag any you want changed and I'll update the spec and roadmap.
 | 1 | Repo name | `buddy-chess` on GitHub user `Donna9080` | Already created |
 | 2 | Repo visibility | Public | Already created — you confirmed this |
 | 3 | README author name | "Dolgorsuren Gunreg" | [README.md](README.md) |
-| 4 | Theme count | 5 themes, not 4 (kept every named theme) | §3 |
+| 4 | Theme count | *(superseded)* originally 5 themes; replaced by a dark/light system in the visual redesign | §3 |
 | 5 | Tutor mode scope | Single-player coaching mode, not a two-person online + tutor mode | §7 |
 | 6 | Difficulty → search depth mapping | Easy=1, Medium=2 (the required baseline), Hard=3 as a stretch goal | §5 |
 | 7 | "New Game" behavior online | Resets the board only; keeps the same two players seated | §6.6 |
 | 8 | The optional "extra" feature | Left unpicked on purpose — the roadmap asks you to choose it when we reach that phase | FEATUREROADMAP_workplan.md, Phase 6 |
+| 9 | One external font in the redesign | Loaded "Playfair Display" from Google Fonts for headings — the one exception to the project's otherwise zero-external-dependency rule, justified by "strong typography" being an explicit, named requirement | §3 |
+| 10 | URLs kept stable through the rename | `hotseat.html`/`vscomputer.html`/`online.html`/`tutor.html` still route by their original names; only the on-screen labels became Play Together/Play Computer/Play Online/Chess Coach | §2, index.html |
 
 ---
 
@@ -298,7 +331,8 @@ moves two squares forward from its starting square and lands beside your
 pawn, you may capture it as though it had only moved one square — but only on
 your very next move.
 
-**Hot-seat** — Two players sharing one device, taking turns.
+**Hot-seat** — Two players sharing one device, taking turns. Shown to
+players on-screen as "Play Together."
 
 **JSON** — A simple, structured text format for sending data (like chess
 moves) between a browser and a server. Every message in Buddy's online mode

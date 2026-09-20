@@ -4,38 +4,42 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Buddy — Chess for Friends</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/base.css">
-  <link rel="stylesheet" href="css/theme-adult.css">
-  <link rel="stylesheet" href="css/theme-children.css">
-  <link rel="stylesheet" href="css/theme-cool.css">
-  <link rel="stylesheet" href="css/theme-messy.css">
-  <link rel="stylesheet" href="css/theme-professional.css">
 </head>
-<body class="theme-adult">
+<body>
   <header class="app-header">
-    <a href="index.html">Buddy</a>
-    <div id="theme-switcher" class="theme-switcher" aria-label="Choose a theme"></div>
+    <a class="brand" href="index.html">Buddy</a>
+    <button id="theme-toggle" class="theme-toggle" type="button" aria-label="Toggle dark mode"></button>
   </header>
 
   <main>
-    <h1>Chess, with a friend, right now</h1>
-    <p class="tagline">No accounts, no setup — just pick a way to play.</p>
+    <section class="hero">
+      <h1>Chess, with a friend, right now</h1>
+      <p class="tagline">No accounts, no setup — just pick a way to play.</p>
+    </section>
 
     <div class="mode-grid">
       <a class="mode-card" href="hotseat.html">
-        <span class="mode-title">Hot-Seat</span>
+        <span class="mode-icon">♟︎♟︎</span>
+        <span class="mode-title">Play Together</span>
         <span class="mode-desc">Two people, one screen, take turns.</span>
       </a>
       <a class="mode-card" href="vscomputer.html">
-        <span class="mode-title">Vs Computer</span>
+        <span class="mode-icon">♞</span>
+        <span class="mode-title">Play Computer</span>
         <span class="mode-desc">Pick a side and a difficulty.</span>
       </a>
       <a class="mode-card" href="online.html">
-        <span class="mode-title">Online</span>
+        <span class="mode-icon">♛</span>
+        <span class="mode-title">Play Online</span>
         <span class="mode-desc">Type a room code, play a friend.</span>
       </a>
       <a class="mode-card" href="tutor.html">
-        <span class="mode-title">Tutor</span>
+        <span class="mode-icon">♝</span>
+        <span class="mode-title">Chess Coach</span>
         <span class="mode-desc">Get coached on your best move.</span>
       </a>
     </div>

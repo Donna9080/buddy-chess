@@ -1,61 +1,63 @@
-// theme-switcher.js — self-initializing. Any page that wants a theme picker
-// just needs an element with id="theme-switcher" and this script tag; no
-// wiring required from the page's own code.
+// theme-switcher.js — self-initializing dark/light toggle. Any page that
+// wants it just needs a button with id="theme-toggle" and this script tag.
+// With no saved preference, the page follows the system's color scheme
+// (handled entirely in base.css); this only takes over once the visitor
+// makes an explicit choice, recorded here and reapplied on every visit.
 
-const THEMES = [
-  { id: 'adult', label: 'Adult' },
-  { id: 'children', label: 'Kids' },
-  { id: 'cool', label: 'Cool' },
-  { id: 'messy', label: 'Messy' },
-  { id: 'professional', label: 'Professional' },
-];
+const STORAGE_KEY = 'buddy-color-scheme';
 
-const STORAGE_KEY = 'buddy-theme';
-
-function applyTheme(themeId) {
-  document.body.className = `theme-${themeId}`;
-}
-
-function loadSavedTheme() {
+function loadSavedScheme() {
   try {
-    return localStorage.getItem(STORAGE_KEY);
+    const saved = localStorage.getItem(STORAGE_KEY);
+    return saved === 'light' || saved === 'dark' ? saved : null;
   } catch {
     return null;
   }
 }
 
-function saveTheme(themeId) {
+function saveScheme(scheme) {
   try {
-    localStorage.setItem(STORAGE_KEY, themeId);
+    localStorage.setItem(STORAGE_KEY, scheme);
   } catch {
     // Browser storage can be unavailable (private mode, disabled cookies).
-    // Theming still works for this visit, it just won't be remembered.
+    // The toggle still works for this visit, it just won't be remembered.
   }
 }
 
-function initThemeSwitcher() {
-  const container = document.getElementById('theme-switcher');
-  if (!container) return;
-
-  const saved = loadSavedTheme();
-  const initial = THEMES.some((theme) => theme.id === saved) ? saved : 'adult';
-  applyTheme(initial);
-
-  for (const theme of THEMES) {
-    const button = document.createElement('button');
-    button.type = 'button';
-    button.className = 'theme-choice';
-    button.textContent = theme.label;
-    button.setAttribute('aria-pressed', String(theme.id === initial));
-    button.addEventListener('click', () => {
-      applyTheme(theme.id);
-      saveTheme(theme.id);
-      for (const child of container.children) {
-        child.setAttribute('aria-pressed', String(child === button));
-      }
-    });
-    container.appendChild(button);
+function applyScheme(scheme) {
+  if (scheme) {
+    document.documentElement.setAttribute('data-theme', scheme);
+  } else {
+    document.documentElement.removeAttribute('data-theme');
   }
 }
 
-initThemeSwitcher();
+function effectiveScheme() {
+  const explicit = document.documentElement.getAttribute('data-theme');
+  if (explicit) return explicit;
+  return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+}
+
+function initThemeToggle() {
+  const button = document.getElementById('theme-toggle');
+  if (!button) return;
+
+  applyScheme(loadSavedScheme());
+  updateButton(button);
+
+  button.addEventListener('click', () => {
+    const next = effectiveScheme() === 'dark' ? 'light' : 'dark';
+    applyScheme(next);
+    saveScheme(next);
+    updateButton(button);
+  });
+}
+
+function updateButton(button) {
+  const isDark = effectiveScheme() === 'dark';
+  button.textContent = isDark ? '\u{1F319}' : '\u{2600}\u{FE0F}';
+  button.setAttribute('aria-label', isDark ? 'Switch to light mode' : 'Switch to dark mode');
+  button.setAttribute('aria-pressed', String(isDark));
+}
+
+initThemeToggle();
