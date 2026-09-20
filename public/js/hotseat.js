@@ -16,6 +16,7 @@ function update() {
   const messages = {
     checkmate: `Checkmate — ${winner} wins!`,
     stalemate: 'Stalemate — the game is a draw.',
+    'draw-insufficient-material': "Draw — neither side has enough pieces left to checkmate.",
     check: `${mover} to move — check!`,
     normal: `${mover} to move`,
   };
