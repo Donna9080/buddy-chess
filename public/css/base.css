@@ -17,14 +17,14 @@
   --color-accent: #a9791f;
   --color-accent-fg: #fffdf8;
 
-  --square-light: #f1e8d8;
-  --square-dark: #b0885d;
-  --board-border: #3d2c1d;
+  --square-light: #edcd9e;
+  --square-dark: #a06a3c;
+  --board-border: #4a3220;
   --piece-white: #fffdf9;
   --piece-white-outline: #2b2b2b;
   --piece-black: #1c1a17;
   --highlight-selected: #a9791f;
-  --highlight-move: rgba(169, 121, 31, 0.38);
+  --highlight-move: rgba(169, 121, 31, 0.4);
   --highlight-capture: rgba(178, 34, 34, 0.55);
 
   --shadow-sm: 0 1px 3px rgba(32, 29, 24, 0.08);
