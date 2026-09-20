@@ -1,11 +1,11 @@
 // room.js — one SQLite-backed Durable Object per online game room, reached
 // via env.ROOM.getByName(roomCode). See ProductSpec.md §6 for the full
-// design. Move *validation* and seat *assignment* land in T4.3 — this file
-// currently applies whatever move it's sent, unchecked, purely to prove the
-// storage mechanism itself: state survives hibernation and a full restart.
+// design. Reconnecting to an *existing* seat with a saved token is T4.4 —
+// this file only handles brand-new connections: first in gets White,
+// second gets Black, everyone after that is a spectator.
 
 import { DurableObject } from 'cloudflare:workers';
-import { createInitialPosition, applyMove } from '../public/js/rules.js';
+import { createInitialPosition, applyMove, isMoveLegal } from '../public/js/rules.js';
 
 const STORAGE_KEY = 'state';
 
@@ -37,9 +37,31 @@ export class Room extends DurableObject {
     // is what lets this object hibernate between messages instead of having
     // to stay resident in memory for the life of every open connection.
     this.ctx.acceptWebSocket(server);
+
+    const seat = await this.assignSeat();
+    // The seat lives on the connection itself (not just in a JS variable)
+    // because hibernation can drop this object from memory between
+    // messages — serializeAttachment is what survives that.
+    server.serializeAttachment({ seat });
+
+    server.send(JSON.stringify({ type: 'seated', payload: { seat } }));
     server.send(JSON.stringify({ type: 'state', payload: this.state }));
 
     return new Response(null, { status: 101, webSocket: client });
+  }
+
+  async assignSeat() {
+    let seat;
+    if (this.state.seats.w === null) {
+      seat = 'w';
+    } else if (this.state.seats.b === null) {
+      seat = 'b';
+    } else {
+      return 'spectator';
+    }
+    this.state.seats[seat] = crypto.randomUUID();
+    await this.ctx.storage.put(STORAGE_KEY, this.state);
+    return seat;
   }
 
   async webSocketMessage(ws, message) {
@@ -51,11 +73,21 @@ export class Room extends DurableObject {
     }
 
     if (parsed.type === 'move') {
+      const { seat } = ws.deserializeAttachment() ?? {};
+
+      if (seat !== this.state.position.turn) {
+        ws.send(JSON.stringify({ type: 'error', payload: 'Not your turn' }));
+        return;
+      }
+      // The server is the referee, not a bystander: every move is checked
+      // against rules.js again here, regardless of what the client already
+      // checked before sending it.
+      if (!isMoveLegal(this.state.position, parsed.payload)) {
+        ws.send(JSON.stringify({ type: 'error', payload: 'Illegal move' }));
+        return;
+      }
+
       this.state.position = applyMove(this.state.position, parsed.payload);
-      // Saved immediately, synchronously with the move itself — no timers,
-      // no periodic snapshotting. If this doesn't complete, the move isn't
-      // considered to have happened as far as a reconnecting player is
-      // concerned.
       await this.ctx.storage.put(STORAGE_KEY, this.state);
       this.broadcast({ type: 'state', payload: this.state });
     }
