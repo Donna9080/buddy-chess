@@ -43,6 +43,30 @@ body {
   font-weight: bold;
 }
 
+.theme-switcher {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-left: auto;
+}
+
+.theme-choice {
+  padding: 0.4em 0.9em;
+  border: 1px solid var(--board-border);
+  border-radius: 999px;
+  background: var(--app-bg);
+  color: var(--app-fg);
+  font: inherit;
+  font-size: 0.85rem;
+  cursor: pointer;
+}
+
+.theme-choice[aria-pressed="true"] {
+  background: var(--highlight-selected);
+  color: var(--app-bg);
+  font-weight: bold;
+}
+
 main {
   display: flex;
   flex-direction: column;

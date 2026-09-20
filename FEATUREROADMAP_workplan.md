@@ -110,7 +110,7 @@ out explicitly: **hot-seat live on the internet, first.**
     stalemate each end the game with a clear on-screen message. It is
     impossible to attempt an illegal move.
 
-- [ ] **T2.3 — Theme switcher + remaining 4 themes**
+- [x] **T2.3 — Theme switcher + remaining 4 themes** ([PR #9](https://github.com/Donna9080/buddy-chess/pull/9))
   - Depends on: T2.1
   - Files: `public/css/theme-children.css`, `theme-cool.css`,
     `theme-messy.css`, `theme-professional.css`, `public/js/theme-switcher.js`
